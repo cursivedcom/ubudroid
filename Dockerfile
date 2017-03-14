@@ -32,7 +32,7 @@ ENV PATH ${PATH}:/opt/tools
 RUN mkdir android && cd android && \
 wget -O tools.zip ${ANDROID_SDK_URL} && \
 unzip tools.zip && rm tools.zip && cd tools &&\
-echo y | android update sdk -a -u -t platform-tools,${ANDROID_APIS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} && \
+echo y | ./android update sdk -a -u -t platform-tools,${ANDROID_APIS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} && \
 chmod a+x -R $ANDROID_HOME && \
 chown -R root:root $ANDROID_HOME 
 
