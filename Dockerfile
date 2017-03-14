@@ -22,7 +22,7 @@ ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.3-linu
     ANT_HOME="/usr/share/ant" \
     MAVEN_HOME="/usr/share/maven" \
     GRADLE_HOME="/usr/share/gradle" \
-    ANDROID_HOME="/opt/android/tools"
+    ANDROID_HOME="/opt/tool/sandroid/tools"
 
 # Copy install tools
 COPY tools /opt/tools
