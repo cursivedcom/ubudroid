@@ -22,7 +22,7 @@ ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.3-linu
     ANT_HOME="/usr/share/ant" \
     MAVEN_HOME="/usr/share/maven" \
     GRADLE_HOME="/usr/share/gradle" \
-    ANDROID_HOME="/opt/tools/android"
+    ANDROID_HOME="android"
 
 # Copy install tools
 COPY tools /opt/tools
@@ -33,8 +33,8 @@ RUN mkdir android && cd android && \
 wget -O tools.zip ${ANDROID_SDK_URL} && \
 unzip tools.zip && rm tools.zip && cd tools &&\
 echo y | ./android update sdk -a -u -t platform-tools,${ANDROID_APIS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} && \
-chmod a+x -R ${ANDROID_HOME} && \
-chown -R root:root ${ANDROID_HOME} 
+chmod a+x -R ../../tools && \
+chown -R root:root ../../tools 
 
 # Setup environment
 RUN mkdir "$ANDROID_HOME/licenses" && echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
