@@ -33,8 +33,8 @@ RUN mkdir android && cd android && \
 wget -O tools.zip ${ANDROID_SDK_URL} && \
 unzip tools.zip && rm tools.zip && cd tools &&\
 echo y | ./android update sdk -a -u -t platform-tools,${ANDROID_APIS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} && \
-chmod a+x -R ../../tools && \
-chown -R root:root ../../tools 
+chmod a+x -R ../tools && \
+chown -R root:root ../tools 
 
 # Setup environment
 RUN mkdir "$ANDROID_HOME/licenses" && echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
