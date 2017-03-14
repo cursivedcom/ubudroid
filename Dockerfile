@@ -29,6 +29,7 @@ RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.c
 
 # Setup environment
 ENV ANDROID_HOME /opt/android-sdk-linux
+RUN mkdir "$ANDROID_HOME/licenses" && echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 RUN which adb
