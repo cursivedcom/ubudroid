@@ -13,22 +13,30 @@ RUN apt-get update && \
   rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Deps
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget unzip zip libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.3-linux.zip" \
+    ANDROID_BUILD_TOOLS_VERSION=25.0.2 \
+    ANDROID_APIS="android-10,android-15,android-16,android-17,android-18,android-19,android-20,android-21,android-22,android-23,android-24,android-25" \
+    ANT_HOME="/usr/share/ant" \
+    MAVEN_HOME="/usr/share/maven" \
+    GRADLE_HOME="/usr/share/gradle" \
+    ANDROID_HOME="/opt/android"
 
 # Copy install tools
 COPY tools /opt/tools
 ENV PATH ${PATH}:/opt/tools
 
-# Install Android SDK
-RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz && \
-  tar xzf android-sdk.tgz && \
-  rm -f android-sdk.tgz && \
-  chown -R root.root android-sdk-linux && \
-  /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
-  /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools,build-tools-21.0.0,build-tools-21.0.1,build-tools-21.0.2,build-tools-21.1,build-tools-21.1.1,build-tools-21.1.2,build-tools-22.0.0,build-tools-22.0.1,build-tools-23.0.0,build-tools-23.0.3,build-tools-24.0.0,build-tools-24.0.1,build-tools-24.0.2,android-21,android-22,android-23,android-24,addon-google_apis_x86-google-21,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services,sys-img-armeabi-v7a-android-24"
+ # Installs Android SDK
+RUN mkdir android && cd android && \
+wget -O tools.zip ${ANDROID_SDK_URL} && \
+unzip tools.zip && rm tools.zip && cd tools &&\
+echo y | android update sdk -a -u -t platform-tools,${ANDROID_APIS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} && \
+chmod a+x -R $ANDROID_HOME && \
+chown -R root:root $ANDROID_HOME 
 
 # Setup environment
-ENV ANDROID_HOME /opt/android-sdk-linux
 RUN mkdir "$ANDROID_HOME/licenses" && echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
@@ -51,3 +59,7 @@ RUN apt-get clean
 # GO to workspace
 RUN mkdir -p /opt/workspace
 WORKDIR /opt/workspace
+
+
+
+
