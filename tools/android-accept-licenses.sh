@@ -1,4 +1,4 @@
-#!/usr/bin/expect -f
+#! /bin/bash
 
 set timeout 1800
 set cmd [lindex $argv 0]
